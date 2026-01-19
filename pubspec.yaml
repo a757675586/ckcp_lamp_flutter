@@ -1,0 +1,55 @@
+name: ckcp_lamp_flutter
+description: CKCP LAMP - 跨平台车载氛围灯控制与OTA升级应用
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.2.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  
+  # 状态管理
+  flutter_riverpod: ^2.4.9
+  riverpod_annotation: ^2.3.3
+  
+  # BLE 蓝牙 - Windows 专用
+  win_ble: ^1.1.1
+  
+  # 本地存储
+  shared_preferences: ^2.2.2
+  
+  # UI 组件
+  flutter_colorpicker: ^1.0.3
+  
+  # 文件处理
+  file_picker: ^6.1.1
+  path_provider: ^2.1.2
+  
+  # 字体
+  google_fonts: ^6.1.0
+  
+  # 国际化
+  flutter_localizations:
+    sdk: flutter
+  intl: ^0.20.2
+  
+  # 工具类
+  logger: ^2.0.2+1
+  equatable: ^2.0.5
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.1
+  riverpod_generator: ^2.3.9
+  build_runner: ^2.4.8
+
+flutter:
+  uses-material-design: true
+  
+  assets:
+    - assets/images/
+    - assets/i18n/
+

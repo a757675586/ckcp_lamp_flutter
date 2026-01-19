@@ -1,0 +1,148 @@
+Package file_picker:linux references file_picker:linux as the default plugin, but it does not provide an inline implementation.
+Ask the maintainers of file_picker to either avoid referencing a default implementation via `platforms: linux: default_package: file_picker` or add an inline implementation to file_picker via `platforms: linux:` `pluginClass` or `dartPluginClass`.
+
+Package file_picker:macos references file_picker:macos as the default plugin, but it does not provide an inline implementation.
+Ask the maintainers of file_picker to either avoid referencing a default implementation via `platforms: macos: default_package: file_picker` or add an inline implementation to file_picker via `platforms: macos:` `pluginClass` or `dartPluginClass`.
+
+Package file_picker:windows references file_picker:windows as the default plugin, but it does not provide an inline implementation.
+Ask the maintainers of file_picker to either avoid referencing a default implementation via `platforms: windows: default_package: file_picker` or add an inline implementation to file_picker via `platforms: windows:` `pluginClass` or `dartPluginClass`.
+
+Package file_picker:linux references file_picker:linux as the default plugin, but it does not provide an inline implementation.
+Ask the maintainers of file_picker to either avoid referencing a default implementation via `platforms: linux: default_package: file_picker` or add an inline implementation to file_picker via `platforms: linux:` `pluginClass` or `dartPluginClass`.
+
+Package file_picker:macos references file_picker:macos as the default plugin, but it does not provide an inline implementation.
+Ask the maintainers of file_picker to either avoid referencing a default implementation via `platforms: macos: default_package: file_picker` or add an inline implementation to file_picker via `platforms: macos:` `pluginClass` or `dartPluginClass`.
+
+Package file_picker:windows references file_picker:windows as the default plugin, but it does not provide an inline implementation.
+Ask the maintainers of file_picker to either avoid referencing a default implementation via `platforms: windows: default_package: file_picker` or add an inline implementation to file_picker via `platforms: windows:` `pluginClass` or `dartPluginClass`.
+
+Analyzing ckcp_lamp_flutter...                                  
+
+warning - Unused import: 'dart:convert' - debug_protocol.dart:4:8 - unused_import
+   info - Use 'const' for final variables initialized to a constant value - debug_protocol.dart:11:3 - prefer_const_declarations
+   info - Unnecessary use of double quotes - debug_protocol.dart:11:16 - prefer_single_quotes
+   info - Don't invoke 'print' in production code - debug_protocol.dart:13:3 - avoid_print
+   info - Don't invoke 'print' in production code - debug_protocol.dart:14:3 - avoid_print
+   info - Don't invoke 'print' in production code - debug_protocol.dart:15:3 - avoid_print
+   info - Don't invoke 'print' in production code - debug_protocol.dart:18:3 - avoid_print
+   info - Don't invoke 'print' in production code - debug_protocol.dart:19:3 - avoid_print
+   info - Don't invoke 'print' in production code - debug_protocol.dart:20:3 - avoid_print
+   info - Don't invoke 'print' in production code - debug_protocol.dart:23:3 - avoid_print
+   info - Don't invoke 'print' in production code - debug_protocol.dart:27:5 - avoid_print
+   info - Don't invoke 'print' in production code - debug_protocol.dart:28:5 - avoid_print
+   info - Don't invoke 'print' in production code - debug_protocol.dart:32:5 - avoid_print
+   info - Don't invoke 'print' in production code - debug_protocol.dart:37:5 - avoid_print
+   info - Don't invoke 'print' in production code - debug_protocol.dart:38:5 - avoid_print
+   info - Don't invoke 'print' in production code - debug_protocol.dart:39:5 - avoid_print
+   info - Don't invoke 'print' in production code - debug_protocol.dart:46:5 - avoid_print
+   info - Don't invoke 'print' in production code - debug_protocol.dart:51:5 - avoid_print
+   info - Don't invoke 'print' in production code - debug_protocol.dart:52:5 - avoid_print
+   info - Don't invoke 'print' in production code - debug_protocol.dart:58:5 - avoid_print
+   info - Don't invoke 'print' in production code - debug_protocol.dart:63:5 - avoid_print
+   info - Don't invoke 'print' in production code - debug_protocol.dart:64:5 - avoid_print
+   info - Don't invoke 'print' in production code - debug_protocol.dart:70:5 - avoid_print
+   info - Don't invoke 'print' in production code - debug_protocol.dart:74:5 - avoid_print
+   info - Don't invoke 'print' in production code - debug_protocol.dart:75:5 - avoid_print
+   info - Don't invoke 'print' in production code - debug_protocol.dart:77:5 - avoid_print
+   info - Don't invoke 'print' in production code - debug_protocol.dart:78:5 - avoid_print
+   info - Don't invoke 'print' in production code - debug_protocol.dart:79:5 - avoid_print
+   info - Don't invoke 'print' in production code - debug_protocol.dart:80:5 - avoid_print
+   info - Don't invoke 'print' in production code - debug_protocol.dart:82:5 - avoid_print
+   info - Statements in a while should be enclosed in a block - lib\core\protocols\ckcp_protocol.dart:570:36 - curly_braces_in_flow_control_structures
+   info - Statements in a while should be enclosed in a block - lib\core\protocols\ckcp_protocol.dart:571:40 - curly_braces_in_flow_control_structures
+   info - Use 'const' with the constructor to improve performance - lib\core\protocols\ckcp_protocol.dart:697:12 - prefer_const_constructors
+   info - Use 'const' for final variables initialized to a constant value - lib\core\services\ble_service.dart:284:5 - prefer_const_declarations
+   info - Unnecessary braces in a string interpolation - lib\core\services\ble_service.dart:368:20 - unnecessary_brace_in_string_interps
+   info - 'value' is deprecated and shouldn't be used. Use component accessors like .r or .g, or toARGB32 for an explicit conversion - lib\core\utils\color_utils.dart:11:23 - deprecated_member_use
+   info - 'red' is deprecated and shouldn't be used. Use (*.r * 255.0).round().clamp(0, 255) - lib\core\utils\color_utils.dart:34:19 - deprecated_member_use
+   info - 'green' is deprecated and shouldn't be used. Use (*.g * 255.0).round().clamp(0, 255) - lib\core\utils\color_utils.dart:34:30 - deprecated_member_use
+   info - 'blue' is deprecated and shouldn't be used. Use (*.b * 255.0).round().clamp(0, 255) - lib\core\utils\color_utils.dart:34:43 - deprecated_member_use
+   info - 'printTime' is deprecated and shouldn't be used. Use `dateTimeFormat` with `DateTimeFormat.onlyTimeAndSinceStart` or `DateTimeFormat.none` instead - lib\core\utils\logger.dart:14:7 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\pages\ambient_light_page.dart:118:33 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\pages\ambient_light_page.dart:151:48 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\pages\ambient_light_page.dart:329:54 - deprecated_member_use
+   info - 'value' is deprecated and shouldn't be used. Use component accessors like .r or .g, or toARGB32 for an explicit conversion - lib\presentation\pages\ambient_light_page.dart:347:51 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\pages\ambient_light_page.dart:441:35 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\pages\ambient_light_page.dart:533:35 - deprecated_member_use
+warning - The value of the field '_isLoadingConfig' isn't used - lib\presentation\pages\factory_page.dart:59:8 - unused_field
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\pages\factory_page.dart:303:40 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\pages\factory_page.dart:337:45 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\pages\factory_page.dart:370:34 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\pages\factory_page.dart:372:53 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\pages\factory_page.dart:511:35 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\pages\factory_page.dart:624:39 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\pages\factory_page.dart:627:41 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\pages\factory_page.dart:887:33 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\pages\factory_page.dart:889:57 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\pages\factory_page.dart:892:33 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\pages\factory_page.dart:907:38 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\pages\factory_page.dart:1013:56 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\pages\factory_page.dart:1045:56 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\pages\home_page.dart:120:44 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\pages\home_page.dart:181:48 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\pages\home_page.dart:193:43 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\pages\home_page.dart:204:45 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\pages\home_page.dart:373:40 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\pages\home_page.dart:400:36 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\pages\ota_page.dart:152:38 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\pages\ota_page.dart:190:38 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\pages\ota_page.dart:269:18 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\pages\ota_page.dart:273:20 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\pages\ota_page.dart:373:28 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\pages\ota_page.dart:464:38 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\pages\ota_page.dart:467:40 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\pages\ota_page.dart:481:46 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\pages\ota_page.dart:501:38 - deprecated_member_use
+   info - 'red' is deprecated and shouldn't be used. Use (*.r * 255.0).round().clamp(0, 255) - lib\presentation\providers\light_provider.dart:108:13 - deprecated_member_use
+   info - 'green' is deprecated and shouldn't be used. Use (*.g * 255.0).round().clamp(0, 255) - lib\presentation\providers\light_provider.dart:109:13 - deprecated_member_use
+   info - 'blue' is deprecated and shouldn't be used. Use (*.b * 255.0).round().clamp(0, 255) - lib\presentation\providers\light_provider.dart:110:13 - deprecated_member_use
+   info - Don't invoke 'print' in production code - lib\presentation\providers\light_provider.dart:179:7 - avoid_print
+   info - 'red' is deprecated and shouldn't be used. Use (*.r * 255.0).round().clamp(0, 255) - lib\presentation\providers\light_provider.dart:223:44 - deprecated_member_use
+   info - 'green' is deprecated and shouldn't be used. Use (*.g * 255.0).round().clamp(0, 255) - lib\presentation\providers\light_provider.dart:223:51 - deprecated_member_use
+   info - 'blue' is deprecated and shouldn't be used. Use (*.b * 255.0).round().clamp(0, 255) - lib\presentation\providers\light_provider.dart:223:60 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\themes\app_theme.dart:128:41 - deprecated_member_use
+warning - Unused import: 'dart:math' - lib\presentation\widgets\color_picker\hsl_color_picker.dart:1:8 - unused_import
+   info - Use 'const' with the constructor to improve performance - lib\presentation\widgets\color_picker\hsl_color_picker.dart:56:37 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - lib\presentation\widgets\color_picker\hsl_color_picker.dart:57:37 - prefer_const_constructors
+   info - Use 'const' literals as arguments to constructors of '@immutable' classes - lib\presentation\widgets\color_picker\hsl_color_picker.dart:58:37 - prefer_const_literals_to_create_immutables
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\widgets\color_picker\hsl_color_picker.dart:285:28 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\widgets\common\glass_card.dart:45:37 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\widgets\common\slider_control.dart:44:44 - deprecated_member_use
+   info - Use 'const' with the constructor to improve performance - lib\presentation\widgets\common\slider_control.dart:51:26 - prefer_const_constructors
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\widgets\common\slider_control.dart:71:45 - deprecated_member_use
+   info - Use 'const' with the constructor to improve performance - lib\presentation\widgets\common\slider_control.dart:126:24 - prefer_const_constructors
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\widgets\device\device_card.dart:40:42 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\widgets\device\device_card.dart:207:28 - deprecated_member_use
+   info - 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss - lib\presentation\widgets\device\device_card.dart:209:47 - deprecated_member_use
+   info - Unnecessary use of double quotes - lib\presentation\widgets\factory\remote_control_card.dart:129:23 - prefer_single_quotes
+warning - The operand can't be 'null', so the condition is always 'true' - lib\presentation\widgets\factory\remote_control_card.dart:132:15 - unnecessary_null_comparison
+  error - The getter 'cardSurface' isn't defined for the type 'AppColors' - lib\presentation\widgets\factory\remote_control_card.dart:143:34 - undefined_getter
+   info - Unnecessary use of double quotes - lib\presentation\widgets\factory\remote_control_card.dart:149:21 - prefer_single_quotes
+   info - Unnecessary use of double quotes - lib\presentation\widgets\factory\remote_control_card.dart:222:22 - prefer_single_quotes
+   info - Unnecessary use of double quotes - lib\presentation\widgets\factory\remote_control_card.dart:223:22 - prefer_single_quotes
+   info - Unnecessary use of double quotes - lib\presentation\widgets\factory\remote_control_card.dart:224:22 - prefer_single_quotes
+   info - Unnecessary use of double quotes - lib\presentation\widgets\factory\remote_control_card.dart:225:22 - prefer_single_quotes
+   info - Unnecessary use of double quotes - lib\presentation\widgets\factory\remote_control_card.dart:226:22 - prefer_single_quotes
+   info - Unnecessary use of double quotes - lib\presentation\widgets\factory\remote_control_card.dart:233:21 - prefer_single_quotes
+   info - Unnecessary use of double quotes - lib\presentation\widgets\factory\remote_control_card.dart:235:21 - prefer_single_quotes
+   info - Unnecessary use of double quotes - lib\presentation\widgets\factory\remote_control_card.dart:364:15 - prefer_single_quotes
+   info - Unnecessary use of double quotes - lib\presentation\widgets\factory\remote_control_card.dart:456:28 - prefer_single_quotes
+   info - Unnecessary use of double quotes - lib\presentation\widgets\factory\remote_control_card.dart:636:28 - prefer_single_quotes
+   info - Unnecessary use of double quotes - lib\presentation\widgets\factory\remote_control_card.dart:641:28 - prefer_single_quotes
+   info - Don't invoke 'print' in production code - test_parser.dart:10:7 - avoid_print
+   info - Don't invoke 'print' in production code - test_parser.dart:13:9 - avoid_print
+   info - Don't invoke 'print' in production code - test_parser.dart:20:9 - avoid_print
+   info - Don't invoke 'print' in production code - test_parser.dart:26:7 - avoid_print
+   info - Don't invoke 'print' in production code - test_parser.dart:32:7 - avoid_print
+   info - Don't invoke 'print' in production code - test_parser.dart:36:9 - avoid_print
+   info - Don't invoke 'print' in production code - test_parser.dart:44:13 - avoid_print
+   info - Don't invoke 'print' in production code - test_parser.dart:50:9 - avoid_print
+   info - Don't invoke 'print' in production code - test_parser.dart:53:13 - avoid_print
+   info - Don't invoke 'print' in production code - test_parser.dart:59:9 - avoid_print
+   info - Don't invoke 'print' in production code - test_parser.dart:74:7 - avoid_print
+   info - Use 'const' for final variables initialized to a constant value - test_parser.dart:115:3 - prefer_const_declarations
+   info - Don't invoke 'print' in production code - test_parser.dart:118:3 - avoid_print
+   info - Don't invoke 'print' in production code - test_parser.dart:122:7 - avoid_print
+   info - Don't invoke 'print' in production code - test_parser.dart:124:7 - avoid_print
+
+126 issues found. (ran in 1.2s)

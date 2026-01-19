@@ -2,5 +2,5 @@
     "version": "v1.0.1",
     "content": "# v1.0.1 Update\n\n- Improved update stability\n- Fixed localized text\n- Optimized download speed",
     "date": "2026-01-19",
-    "downloadUrl": "https://github.com/a757675586/ckcp_lamp_flutter/raw/master/mock_installer.exe"
+    "downloadUrl": "https://raw.githubusercontent.com/a757675586/ckcp_lamp_flutter/master/mock_installer.exe"
 }

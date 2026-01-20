@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart' as path;
 import '../constants/app_info.dart';
 
 class AppUpdateInfo {
@@ -12,14 +13,16 @@ class AppUpdateInfo {
   final bool force;
   final String releaseDate;
   final String source;
+  final bool hasUpdate; // New field
 
   AppUpdateInfo({
     required this.version,
     required this.content,
     required this.downloadUrl,
     required this.releaseDate,
-    this.source = 'Github',
+    this.source = 'Github Releases',
     this.force = false,
+    this.hasUpdate = false, // Default false
   });
 }
 
@@ -28,49 +31,66 @@ class AppUpdateService {
   static AppUpdateService get instance => _instance;
   AppUpdateService._internal();
 
-  /// Check for updates using raw version.json
+  /// Check for updates from GitHub Releases API
   Future<AppUpdateInfo?> checkUpdate() async {
+    final client = HttpClient();
     try {
-      final client = HttpClient();
-      // Use raw.githubusercontent.com for strictly raw file access
-      // Cache-busting with timestamp to ensure fresh check
       final url =
-          'https://raw.githubusercontent.com/a757675586/ckcp_lamp_flutter/master/version.json?t=${DateTime.now().millisecondsSinceEpoch}';
+          'https://api.github.com/repos/a757675586/ckcp_lamp_flutter/releases/latest';
 
       final request = await client.getUrl(Uri.parse(url));
-      final response = await request.close();
+      request.headers.add('User-Agent', 'CKCP-LAMP-App');
 
-      if (response.statusCode != HttpStatus.ok) {
-        debugPrint('Update check failed: ${response.statusCode}');
-        return null;
-      }
+      final response = await request.close();
+      if (response.statusCode != HttpStatus.ok) return null;
 
       final responseBody = await response.transform(utf8.decoder).join();
       final Map<String, dynamic> data = jsonDecode(responseBody);
 
-      final String tagName = data['version'] ?? '';
-      final String body = data['content'] ?? '';
-      final String date = data['date'] ?? '';
-      final String downloadUrl = data['downloadUrl'] ?? '';
+      final String tagName = data['tag_name'] ?? '';
+      final String body = data['body'] ?? '';
+      final String publishedAt = data['published_at'] ?? '';
+      final String releaseDate =
+          publishedAt.length >= 10 ? publishedAt.substring(0, 10) : publishedAt;
+
+      // Prioritize ZIP, then EXE
+      String downloadUrl = '';
+      final List<dynamic> assets = data['assets'] ?? [];
+      for (var asset in assets) {
+        final name = asset['name'].toString().toLowerCase();
+        if (name.endsWith('.zip') || name.endsWith('.exe')) {
+          downloadUrl = asset['browser_download_url'];
+          // Prefer zip if multiple found? Let's just take first match or prefer zip.
+          if (name.endsWith('.zip')) break;
+        }
+      }
+
+      if (downloadUrl.isEmpty && assets.isNotEmpty) {
+        downloadUrl = assets[0]['browser_download_url'];
+      }
 
       if (tagName.isEmpty) return null;
 
       final currentVersion = AppInfo.version.replaceAll('v', '');
       final latestVersion = tagName.replaceAll('v', '');
 
-      if (_isNewer(currentVersion, latestVersion)) {
-        return AppUpdateInfo(
-          version: tagName,
-          content: body,
-          downloadUrl: downloadUrl,
-          releaseDate: date,
-          source: 'Github',
-        );
-      }
+      final isNewer = _isNewer(currentVersion, latestVersion);
+
+      // Return info regardless of isNewer, so UI can show "Latest: vX.X.X"
+      return AppUpdateInfo(
+        version: tagName,
+        content: body,
+        downloadUrl: downloadUrl,
+        releaseDate: releaseDate,
+        source: 'Github Releases',
+        hasUpdate: isNewer,
+      );
     } catch (e) {
       debugPrint('Error checking update: $e');
+      return null;
+    } finally {
+      client.close(); // Always close HttpClient
     }
-    return null;
   }
 
   bool _isNewer(String current, String latest) {
@@ -89,57 +109,29 @@ class AppUpdateService {
       {required Function(double) onProgress}) async {
     try {
       final tempDir = await getTemporaryDirectory();
-      final fileName =
-          url.split('/').last.isEmpty ? 'update.exe' : url.split('/').last;
-
-      // Ensure we treat the mock file as a batch script for successful execution simulation
-      final mockFileName = fileName.endsWith('.exe')
-          ? fileName.replaceAll('.exe', '.bat')
-          : '$fileName.bat';
-      final savePath = '${tempDir.path}\\$mockFileName';
-
-      // SIMULATION MODE: Even with "Real" download, we want the resulting file
-      // to be executable on the user's machine (msg popup).
-      // So we download the content, but we overwrite it with a batch script
-      // OR we just create the batch script.
-      // Since "mock_installer.exe" on server is just text data, it won't run.
-      // We will perform a "Download" to prove network works, but save valid content.
+      final uri = Uri.parse(url);
+      final filename =
+          uri.pathSegments.isNotEmpty ? uri.pathSegments.last : 'update.pkg';
+      final savePath = path.join(tempDir.path, filename);
 
       final client = HttpClient();
-      final request = await client.getUrl(Uri.parse(url));
+      final request = await client.getUrl(uri);
       final response = await request.close();
-
-      if (response.statusCode != HttpStatus.ok) {
-        throw Exception('Download failed code: ${response.statusCode}');
-      }
+      if (response.statusCode != HttpStatus.ok)
+        throw Exception('HTTP ${response.statusCode}');
 
       final contentLength = response.contentLength;
       final file = File(savePath);
       final sink = file.openWrite();
 
-      // We actually download the data to show progress
       int receivedBytes = 0;
-      await response.listen(
-        (chunk) {
-          receivedBytes += chunk.length;
-          // Discard real chunk, write batch chunk?
-          // Simplest: Download generic data, then overwrite file at the end.
-          // Or just write to file, and verify.
-          // But mock_installer.exe is garbage text.
-          // Use 'sink.add' to simulate real IO.
-          sink.add(chunk);
-          if (contentLength > 0) {
-            onProgress(receivedBytes / contentLength);
-          }
-        },
-        cancelOnError: true,
-      ).asFuture();
+      await response.listen((chunk) {
+        receivedBytes += chunk.length;
+        sink.add(chunk);
+        if (contentLength > 0) onProgress(receivedBytes / contentLength);
+      }).asFuture();
 
       await sink.close();
-
-      // FIX: Overwrite with valid batch script so "Install" works
-      await file.writeAsString(
-          '@echo off\nmsg * "Update v1.0.1 Installed Successfully!"\nexit');
 
       return savePath;
     } catch (e) {
@@ -147,15 +139,67 @@ class AppUpdateService {
     }
   }
 
-  Future<void> openUrl(String url) async {
+  Future<void> launchInstaller(String filePath) async {
     if (Platform.isWindows) {
-      await Process.run('explorer', [url]);
+      final ext = path.extension(filePath).toLowerCase();
+
+      if (ext == '.zip') {
+        await _installZip(filePath);
+      } else {
+        // Assume .exe installer
+        await Process.start(filePath, [], mode: ProcessStartMode.detached);
+        exit(0);
+      }
     }
   }
 
-  Future<void> launchInstaller(String filePath) async {
+  Future<void> _installZip(String zipPath) async {
+    final tempDir = await getTemporaryDirectory();
+    final unzipDir = path.join(tempDir.path, 'update_unzip');
+
+    // Clean unzip dir
+    final dir = Directory(unzipDir);
+    if (await dir.exists()) await dir.delete(recursive: true);
+    await dir.create();
+
+    // 1. Unzip using PowerShell
+    // Expand-Archive -Path "zipPath" -DestinationPath "unzipDir" -Force
+    final unzipResult = await Process.run('powershell', [
+      '-Command',
+      'Expand-Archive -Path "$zipPath" -DestinationPath "$unzipDir" -Force'
+    ]);
+
+    if (unzipResult.exitCode != 0) {
+      throw Exception('Unzip failed: ${unzipResult.stderr}');
+    }
+
+    // 2. Create Batch Script to Move Files and Restart
+    final scriptPath = path.join(tempDir.path, 'install_update.bat');
+    final appDir = path.dirname(Platform.resolvedExecutable);
+    final appName = path.basename(Platform.resolvedExecutable);
+
+    // Check if unzip has a subfolder (common in zip) or flat
+    // We'll use XCOPY /S
+
+    final scriptContent = '''
+@echo off
+echo Installing Update...
+timeout /t 2 /nobreak >nul
+xcopy "$unzipDir\\*" "$appDir\\" /Y /S /E
+start "" "$appDir\\$appName"
+exit
+''';
+
+    await File(scriptPath).writeAsString(scriptContent);
+
+    // 3. Run Batch
+    await Process.start(scriptPath, [], mode: ProcessStartMode.detached);
+    exit(0);
+  }
+
+  Future<void> openUrl(String url) async {
     if (Platform.isWindows) {
-      await Process.run('start', ['', filePath], runInShell: true);
+      await Process.run('explorer', [url]);
     }
   }
 }

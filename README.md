@@ -12,6 +12,16 @@
 
 ---
 
+## 📚 文档资源
+
+- [**构建与发布指南**](docs/BUILD_AND_RELEASE_GUIDE.md) - 如何构建应用与发布新版本。
+- [**自动化发布配置**](docs/GITHUB_CLI_SETUP.md) - 配置 GitHub CLI 实现一键发布。
+- [**架构设计**](docs/ARCHITECTURE.md) - 系统架构与设计模式。
+- [**氛围灯逻辑**](docs/AMBIENT_LIGHT_LOGIC.md) - 核心控制逻辑说明。
+- [**OTA 修复报告**](docs/OTA_BUG_FIX_REPORT.md) - 历史问题修复记录。
+
+---
+
 ## ✨ 功能特性
 
 ### 🌈 氛围灯控制
@@ -146,10 +156,11 @@ lib/
   - [ ] Android 平台
   - [ ] iOS 平台
 
-- [ ] **Phase 3**: 完善功能
-  - [ ] 工厂模式完整实现
+- [x] **Phase 3**: 完善功能
+  - [x] 工厂模式完整实现
   - [ ] 多设备管理
-  - [ ] 国际化支持
+  - [x] 国际化支持 (EN/ZH/JA)
+  - [x] Glassmorphism 2.0 UI
 
 ---
 

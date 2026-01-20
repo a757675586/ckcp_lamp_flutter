@@ -1,6 +1,5 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
-import '../../themes/colors.dart';
+import 'glass_container.dart';
 
 /// 毛玻璃卡片组件
 /// 参考 WebOTA 项目的 card-glass 样式
@@ -28,55 +27,24 @@ class GlassCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget content = ClipRRect(
-      borderRadius: BorderRadius.circular(borderRadius),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: blur, sigmaY: blur),
-        child: Container(
-          decoration: BoxDecoration(
-            color:
-                backgroundColor ?? Theme.of(context).cardColor.withOpacity(0.7),
-            borderRadius: BorderRadius.circular(borderRadius),
-            border: Border.all(
-              color: Theme.of(context).dividerColor.withOpacity(0.5),
-              width: 1,
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.1),
-                blurRadius: 20,
-                offset: const Offset(0, 10),
-              ),
-            ],
+    return GlassContainer(
+      margin: margin,
+      borderRadius: borderRadius,
+      onTap: onTap,
+      // Pass padding as zero to GlassContainer, handle it internally for header separation
+      padding: EdgeInsets.zero,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (header != null) header!,
+          Padding(
+            padding: padding ?? const EdgeInsets.all(20),
+            child: child,
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              if (header != null) header!,
-              Padding(
-                padding: padding ?? const EdgeInsets.all(20),
-                child: child,
-              ),
-            ],
-          ),
-        ),
+        ],
       ),
     );
-
-    if (onTap != null) {
-      content = InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(borderRadius),
-        child: content,
-      );
-    }
-
-    if (margin != null) {
-      content = Padding(padding: margin!, child: content);
-    }
-
-    return content;
   }
 }
 

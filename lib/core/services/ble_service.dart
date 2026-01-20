@@ -61,6 +61,7 @@ class BleService {
   Stream<BleDevice> get scanResults => _scanResultController.stream;
   Stream<String> get logs => _logController.stream;
   Stream<void> get infoUpdates => _infoUpdateController.stream;
+  Stream<BleState> get bleState => WinBle.bleState;
 
   /// 初始化 BLE
   Future<void> initialize() async {

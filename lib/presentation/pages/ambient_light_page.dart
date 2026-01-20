@@ -4,6 +4,7 @@ import '../themes/colors.dart';
 import '../providers/ble_provider.dart';
 import '../providers/light_provider.dart';
 import '../widgets/common/glass_card.dart';
+import '../widgets/common/glass_container.dart';
 import '../widgets/common/switch_card.dart';
 import '../widgets/common/slider_control.dart';
 import '../widgets/color_picker/hsl_color_picker.dart';
@@ -110,19 +111,9 @@ class _AmbientLightPageState extends ConsumerState<AmbientLightPage> {
   }
 
   Widget _buildModeSwitch(LightState lightState) {
-    return Container(
+    return GlassContainer(
       padding: const EdgeInsets.all(4),
-      decoration: BoxDecoration(
-        color: Theme.of(context).cardColor,
-        borderRadius: BorderRadius.circular(50),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
+      borderRadius: 50,
       child: Row(
         children: [
           _buildModeTab(0, context.tr('solid_color'), lightState.currentMode),

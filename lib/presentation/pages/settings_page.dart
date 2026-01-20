@@ -5,8 +5,10 @@ import 'package:ckcp_lamp_flutter/presentation/providers/preferences_provider.da
 import 'package:ckcp_lamp_flutter/presentation/themes/colors.dart';
 import 'package:ckcp_lamp_flutter/core/extensions/context_extensions.dart';
 import 'package:ckcp_lamp_flutter/core/constants/app_info.dart';
-import 'package:ckcp_lamp_flutter/core/services/app_update_service.dart';
+
 import '../widgets/update/upgrade_dialog.dart';
+
+import '../widgets/common/diffuse_background.dart';
 
 class SettingsPage extends ConsumerStatefulWidget {
   const SettingsPage({super.key});
@@ -16,60 +18,14 @@ class SettingsPage extends ConsumerStatefulWidget {
 }
 
 class _SettingsPageState extends ConsumerState<SettingsPage> {
-  bool _isCheckingUpdate = false;
-
-  Future<void> _checkUpdate(BuildContext context) async {
-    if (_isCheckingUpdate) return;
-
-    setState(() {
-      _isCheckingUpdate = true;
-    });
-
-    try {
-      // Show loading snackbar? Or just spinner.
-      // Professional feel: Spinner in the tile is subtle and nice.
-
-      final updateInfo = await AppUpdateService.instance.checkUpdate();
-
-      if (!mounted) return;
-
-      if (updateInfo != null) {
-        _showUpdateDialog(context, updateInfo);
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(context.tr('latest_version')),
-            backgroundColor: Colors.green,
-            behavior: SnackBarBehavior.floating,
-          ),
-        );
-      }
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-            content: Text('${context.tr('error')}: $e'),
-            backgroundColor: Colors.red),
-      );
-    } finally {
-      if (mounted) {
-        setState(() {
-          _isCheckingUpdate = false;
-        });
-      }
-    }
-  }
-
-  void _showUpdateDialog(BuildContext context, AppUpdateInfo info) {
+  void _checkUpdate(BuildContext context) {
     showDialog(
       context: context,
       barrierDismissible: false,
       builder: (ctx) => UpgradeDialog(
-        info: info,
+        info: null, // Start with no info
         onIgnore: () => Navigator.pop(ctx),
-        onUpdate: () {
-          Navigator.pop(ctx);
-          // Implement download logic here
-        },
+        // onUpdate not strictly needed as dialog handles download itself now
       ),
     );
   }
@@ -81,6 +37,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
 
     return Scaffold(
       extendBodyBehindAppBar: true,
+      backgroundColor: Colors.transparent, // Transparent Scaffold
       appBar: AppBar(
         title: Text(context.tr('settings_title')),
         leading: IconButton(
@@ -88,10 +45,10 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
           onPressed: () => Navigator.pop(context),
         ),
       ),
-      body: Container(
-        decoration: BoxDecoration(
-          color: Theme.of(context).scaffoldBackgroundColor,
-        ),
+      body: DiffuseBackground(
+        // Add DiffuseBackground
+        colors: AppColors
+            .diffuseHomeColors, // Use same colors as Home or distinct? Let's use Home for consistency
         child: SafeArea(
           child: ListView(
             padding: const EdgeInsets.all(24),
@@ -162,6 +119,15 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                         prefs.locale.languageCode == 'en',
                         () => notifier.setLocale(const Locale('en')),
                       ),
+                      const SizedBox(height: 8),
+                      const Divider(height: 1),
+                      const SizedBox(height: 8),
+                      _buildLanguageOption(
+                        context,
+                        '🇯🇵 ${context.tr('lang_ja')}',
+                        prefs.locale.languageCode == 'ja',
+                        () => notifier.setLocale(const Locale('ja')),
+                      ),
                     ],
                   ),
                 ),
@@ -187,13 +153,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                       leading: const Icon(Icons.system_update, // New Icon
                           color: AppColors.primary),
                       title: Text(context.tr('online_upgrade')),
-                      trailing: _isCheckingUpdate
-                          ? const SizedBox(
-                              width: 20,
-                              height: 20,
-                              child: CircularProgressIndicator(strokeWidth: 2),
-                            )
-                          : const Icon(Icons.arrow_forward_ios, size: 16),
+                      trailing: const Icon(Icons.arrow_forward_ios, size: 16),
                       onTap: () => _checkUpdate(context),
                     ),
                     const Padding(
@@ -203,8 +163,28 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
                     ListTile(
                       leading: const Icon(Icons.person_outline,
                           color: AppColors.primary),
-                      title: const Text('Author'),
+                      title: Text(context.tr('author')),
                       subtitle: const Text(AppInfo.author),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      child: Divider(height: 1),
+                    ),
+                    ListTile(
+                      leading: const Icon(Icons.date_range,
+                          color: AppColors.primary),
+                      title: Text(context.tr('build_date') ?? 'Build Date'),
+                      subtitle: const Text(AppInfo.buildDate),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      child: Divider(height: 1),
+                    ),
+                    ListTile(
+                      leading:
+                          const Icon(Icons.layers, color: AppColors.primary),
+                      title: Text(context.tr('framework') ?? 'Framework'),
+                      subtitle: const Text(AppInfo.framework),
                     ),
                   ],
                 ),

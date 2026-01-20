@@ -153,29 +153,26 @@ class _FactoryPageState extends ConsumerState<FactoryPage> {
           ),
         ],
       ),
-      body: Container(
-        color: Theme.of(context).scaffoldBackgroundColor,
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(20),
-          child: Center(
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 800),
-              child: Column(
-                children: [
-                  _buildDeviceRegistrationCard(),
-                  const SizedBox(height: 20),
-                  _buildLedConfigCard(),
-                  const SizedBox(height: 20),
-                  _buildSoundSettingsCard(),
-                  const SizedBox(height: 20),
-                  _buildAdvancedFeaturesCard(),
-                  const SizedBox(height: 20),
-                  const SizedBox(height: 20),
-                  const RemoteControlCard(),
-                  const SizedBox(height: 20),
-                  _buildDangerZoneCard(),
-                ],
-              ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(20),
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 800),
+            child: Column(
+              children: [
+                _buildDeviceRegistrationCard(),
+                const SizedBox(height: 20),
+                _buildLedConfigCard(),
+                const SizedBox(height: 20),
+                _buildSoundSettingsCard(),
+                const SizedBox(height: 20),
+                _buildAdvancedFeaturesCard(),
+                const SizedBox(height: 20),
+                const SizedBox(height: 20),
+                const RemoteControlCard(),
+                const SizedBox(height: 20),
+                _buildDangerZoneCard(),
+              ],
             ),
           ),
         ),

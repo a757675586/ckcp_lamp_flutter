@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:win_ble/win_ble.dart' hide BleDevice;
 import '../../../core/services/ble_service.dart';
 
 /// BLE 服务提供者
@@ -11,7 +12,14 @@ final bleServiceProvider = Provider<BleService>((ref) {
 final bleInitializedProvider = FutureProvider<bool>((ref) async {
   final bleService = ref.watch(bleServiceProvider);
   await bleService.initialize();
+  await bleService.initialize();
   return bleService.isInitialized;
+});
+
+/// BLE 适配器状态 (蓝牙开关)
+final bleStateProvider = StreamProvider<BleState>((ref) {
+  final bleService = ref.watch(bleServiceProvider);
+  return bleService.bleState;
 });
 
 /// BLE 连接状态

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:win_ble/win_ble.dart' hide BleDevice;
 import 'settings_page.dart';
 
 import '../themes/colors.dart';
@@ -7,6 +8,8 @@ import '../providers/ble_provider.dart';
 import '../widgets/device/device_card.dart';
 import '../../core/services/ble_service.dart';
 import '../widgets/home/connection_status_bar.dart';
+import '../widgets/common/diffuse_background.dart';
+import '../widgets/common/glass_container.dart';
 import 'ambient_light_page.dart';
 import 'ota_page.dart';
 import 'factory_page.dart';
@@ -23,16 +26,17 @@ class HomePage extends ConsumerStatefulWidget {
 
 class _HomePageState extends ConsumerState<HomePage> {
   int _currentIndex = 0;
-
-  List<Widget> get _pages => [
-        const AmbientLightPage(),
-        FactoryPage(onExit: () => setState(() => _currentIndex = 0)),
-        const OtaPage(),
-      ];
+  late final List<Widget> _pages;
 
   @override
   void initState() {
     super.initState();
+    // Cache pages to avoid recreation on every build
+    _pages = [
+      const AmbientLightPage(),
+      FactoryPage(onExit: () => setState(() => _currentIndex = 0)),
+      const OtaPage(),
+    ];
     // 初始化 BLE
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.read(bleControllerProvider.notifier);
@@ -49,47 +53,103 @@ class _HomePageState extends ConsumerState<HomePage> {
         ) ??
         false;
 
-    return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      body: Row(
-        children: [
-          // 左侧导航栏 (Sidebar)
-          Container(
-            width: 250,
-            decoration: BoxDecoration(
-              color: Theme.of(context).cardColor,
-              border: Border(
-                right: BorderSide(color: Theme.of(context).dividerColor),
+    // 监听系统蓝牙状态
+    ref.listen(bleStateProvider, (previous, next) {
+      if (next.value == BleState.Off) {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Row(
+                children: [
+                  const Icon(Icons.bluetooth_disabled, color: Colors.white),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(context.tr('bluetooth_off'),
+                            style:
+                                const TextStyle(fontWeight: FontWeight.bold)),
+                        Text(context.tr('bluetooth_check_msg')),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              backgroundColor: Theme.of(context).colorScheme.error,
+              duration: const Duration(seconds: 5),
+              action: SnackBarAction(
+                label: context.tr('ignore'),
+                textColor: Colors.white,
+                onPressed: () {},
               ),
             ),
-            child: Column(
-              children: [
-                // Logo 区域
-                _buildSidebarHeader(),
+          );
+        }
+      }
+    });
 
-                const SizedBox(height: 20),
+    return Scaffold(
+      backgroundColor: Colors.transparent, // Transparent for DiffuseBackground
+      body: DiffuseBackground(
+        child: Row(
+          children: [
+            // 左侧导航栏 (Glass Sidebar)
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: GlassContainer(
+                width: 260,
+                // height: double.infinity, // GlassContainer defaults to child height if null, but here we want full height
+                // Let's use Expanded or layout builder? No, Row children must have constraints.
+                // GlassContainer usually sizes to child. Let's make it expand in column?
+                // Actually, just set height to reasonable value or use layout.
+                // But we are in a Row.
+                // Let's make GlassContainer accept height or we constraint it.
+                // Wait, GlassContainer implementation accepts width/height.
+                // But in a Row, we usually want full height.
+                // Let's wrap Sidebar content in Column and let it expand?
+                // No, GlassContainer is the container.
+                // Let's just use Expanded for the content area and fixed width for sidebar.
+                // But Sidebar needs to be full height.
+                // Let's make sidebar a simple GlassContainer with specific constraints?
+                // Or better: Container(width: 250, child: GlassContainer(child: ...))?
+                // Actually, let's just pass `height`? No, screen height varies.
+                // A `GlassContainer` is just a decoration.
+                // Let's wrap `Column` in `GlassContainer`.
+                // But `height` needs to be infinite?
+                // Let's rely on parent constraints.
+                // In a Row, `Expanded` expands width. CrossAxisAlignment.stretch expands height?
+                // Yes. `Row` with `crossAxisAlignment: CrossAxisAlignment.stretch`
+                // But `HomePage` build method uses `Row`.
 
-                // 导航菜单
-                _buildNavItem(0, Icons.light_mode_outlined, Icons.light_mode,
-                    context.tr('ambient_light')),
-                _buildNavItem(1, Icons.build_outlined, Icons.build,
-                    context.tr('factory_mode_nav'),
-                    enabled: isConnected),
-                _buildNavItem(2, Icons.system_update_outlined,
-                    Icons.system_update, context.tr('ota_upgrade_nav')),
+                child: Column(
+                  children: [
+                    // Logo 区域
+                    _buildSidebarHeader(),
 
-                const Spacer(),
+                    const SizedBox(height: 20),
 
-                // 底部状态区域
-                _buildSidebarFooter(connectionState),
-              ],
+                    // 导航菜单
+                    _buildNavItem(0, Icons.light_mode_outlined,
+                        Icons.light_mode, context.tr('ambient_light')),
+                    _buildNavItem(1, Icons.build_outlined, Icons.build,
+                        context.tr('factory_mode_nav'),
+                        enabled: isConnected),
+                    _buildNavItem(2, Icons.system_update_outlined,
+                        Icons.system_update, context.tr('ota_upgrade_nav')),
+
+                    const Spacer(),
+
+                    // 底部状态区域
+                    _buildSidebarFooter(connectionState),
+                  ],
+                ),
+              ),
             ),
-          ),
 
-          // 右侧主内容区
-          Expanded(
-            child: Container(
-              color: Theme.of(context).scaffoldBackgroundColor,
+            // 右侧主内容区
+            Expanded(
               child: Column(
                 children: [
                   // 顶部状态栏 (显示连接状态等)
@@ -97,15 +157,18 @@ class _HomePageState extends ConsumerState<HomePage> {
 
                   // 页面内容
                   Expanded(
-                    child: ClipRect(
-                      child: _pages[_currentIndex],
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 16.0, bottom: 16.0),
+                      child: ClipRect(
+                        child: _pages[_currentIndex],
+                      ),
                     ),
                   ),
                 ],
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -168,59 +231,57 @@ class _HomePageState extends ConsumerState<HomePage> {
       {bool enabled = true}) {
     final isSelected = _currentIndex == index;
     final theme = Theme.of(context);
+    // New Glass Style: Use rounded glass tile for selected item
 
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: enabled
-            ? () {
-                setState(() => _currentIndex = index);
-              }
-            : null,
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-          decoration: BoxDecoration(
-            border: isSelected
-                ? const Border(
-                    right: BorderSide(color: AppColors.primary, width: 3),
-                  )
-                : null,
-            gradient: isSelected
-                ? LinearGradient(
-                    colors: [
-                      AppColors.primary.withOpacity(0.1),
-                      theme.cardColor.withOpacity(0.5)
-                    ],
-                    begin: Alignment.centerLeft,
-                    end: Alignment.centerRight,
-                  )
-                : null,
-          ),
-          child: Row(
-            children: [
-              Icon(
-                isSelected ? activeIcon : icon,
-                color: enabled
-                    ? (isSelected
-                        ? AppColors.primary
-                        : theme.textTheme.bodyMedium?.color)
-                    : theme.disabledColor,
-                size: 24,
-              ),
-              const SizedBox(width: 16),
-              Text(
-                label,
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(12),
+          onTap: enabled
+              ? () {
+                  setState(() => _currentIndex = index);
+                }
+              : null,
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+              color: isSelected
+                  ? AppColors.primary.withOpacity(0.2)
+                  : Colors.transparent,
+              border: isSelected
+                  ? Border.all(
+                      color: AppColors.primary.withOpacity(0.5), width: 1)
+                  : null,
+            ),
+            child: Row(
+              children: [
+                Icon(
+                  isSelected ? activeIcon : icon,
                   color: enabled
                       ? (isSelected
-                          ? AppColors.primary
-                          : theme.textTheme.bodyLarge?.color)
+                          ? AppColors.primaryLight
+                          : theme.textTheme.bodyMedium?.color)
                       : theme.disabledColor,
+                  size: 20,
                 ),
-              ),
-            ],
+                const SizedBox(width: 12),
+                Text(
+                  label,
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+                    color: enabled
+                        ? (isSelected
+                            ? Colors.white
+                            : theme.textTheme.bodyLarge?.color)
+                        : theme.disabledColor,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -230,20 +291,24 @@ class _HomePageState extends ConsumerState<HomePage> {
   Widget _buildSidebarFooter(AsyncValue<BleConnectionState> connectionState) {
     return Container(
       padding: const EdgeInsets.all(20),
-      color: Theme.of(context).cardColor,
-      child: ElevatedButton.icon(
-        onPressed: _showDeviceScanner,
-        icon: const Icon(Icons.bluetooth_searching, size: 20),
-        label: Text(context.tr('scan_device')),
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          foregroundColor: Theme.of(context).textTheme.bodyLarge?.color,
-          elevation: 0,
-          padding: const EdgeInsets.symmetric(vertical: 16),
-          minimumSize: const Size(double.infinity, 50),
-          side: BorderSide(color: Theme.of(context).dividerColor),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+      // Remove opaque background, let glass shine
+      child: GlassContainer(
+        padding: EdgeInsets.zero,
+        borderRadius: 12,
+        child: InkWell(
+          onTap: _showDeviceScanner,
+          borderRadius: BorderRadius.circular(12),
+          child: Container(
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            alignment: Alignment.center,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(Icons.bluetooth_searching, size: 20),
+                const SizedBox(width: 8),
+                Text(context.tr('scan_device')),
+              ],
+            ),
           ),
         ),
       ),

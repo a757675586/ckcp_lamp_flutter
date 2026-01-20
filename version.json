@@ -1,6 +1,9 @@
-{
-    "version": "v1.0.1",
-    "content": "# v1.0.1 Update\n\n- Improved update stability\n- Fixed localized text\n- Optimized download speed",
-    "date": "2026-01-19",
+﻿{
+    "version": "v1.0.6",
+    "content": "# v1.0.5 Update\n\n- Publish Skill & Automation\n- Complete Localization\n- Remote Control Auto-Scroll Fix",
+    "date": "2026-01-20",
     "downloadUrl": "https://raw.githubusercontent.com/a757675586/ckcp_lamp_flutter/master/mock_installer.exe"
 }
+
+
+

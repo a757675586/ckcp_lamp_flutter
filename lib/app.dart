@@ -30,6 +30,7 @@ class CkcpLampApp extends ConsumerWidget {
       supportedLocales: const [
         Locale('en'),
         Locale('zh'),
+        Locale('ja'),
       ],
       localizationsDelegates: const [
         AppLocalizationsDelegate(),

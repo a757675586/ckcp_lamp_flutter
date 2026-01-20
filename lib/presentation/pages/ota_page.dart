@@ -7,6 +7,7 @@ import '../themes/colors.dart';
 import '../providers/ble_provider.dart';
 import '../providers/ota_provider.dart';
 import '../widgets/common/glass_card.dart';
+import '../widgets/common/glass_container.dart';
 import '../../core/services/ble_service.dart';
 import '../../ui/widgets/debug_console.dart';
 import '../../core/extensions/context_extensions.dart';
@@ -126,22 +127,13 @@ class OtaPage extends ConsumerWidget {
       BuildContext context, WidgetRef ref, OtaState otaState) {
     return GestureDetector(
       onTap: () => _pickFirmwareFile(ref),
-      child: Container(
+      child: GlassContainer(
         height: 160,
-        decoration: BoxDecoration(
-          color: Theme.of(context).cardColor,
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(
-            color: otaState.firmware != null
-                ? AppColors.success
-                : Theme.of(context).dividerColor,
-            width: 2,
-            style: BorderStyle.solid,
-          ),
+        child: Center(
+          child: otaState.firmware != null
+              ? _buildFilePreview(context, otaState)
+              : _buildDropPlaceholder(context),
         ),
-        child: otaState.firmware != null
-            ? _buildFilePreview(context, otaState)
-            : _buildDropPlaceholder(context),
       ),
     );
   }
@@ -174,7 +166,7 @@ class OtaPage extends ConsumerWidget {
         ),
         const SizedBox(height: 4),
         Text(
-          context.tr('supports_bin_format'),
+          context.tr('supports_bin'),
           style: TextStyle(
             color: Theme.of(context).textTheme.bodySmall?.color,
             fontSize: 13,
@@ -228,7 +220,7 @@ class OtaPage extends ConsumerWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Theme.of(context).cardColor,
+        color: Theme.of(context).cardColor.withOpacity(0.5), // Semi-transparent
         borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
@@ -333,12 +325,8 @@ class OtaPage extends ConsumerWidget {
       data: (device) {
         if (device == null) return const SizedBox.shrink();
 
-        return Container(
+        return GlassContainer(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-          decoration: BoxDecoration(
-            color: Theme.of(context).cardColor,
-            borderRadius: BorderRadius.circular(12),
-          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

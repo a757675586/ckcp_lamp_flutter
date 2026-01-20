@@ -143,19 +143,7 @@ class _RemoteControlCardState extends State<RemoteControlCard> {
 
       _dataQueue.removeRange(0, count);
     });
-
-    // 智能滚动: 只有当在一个接近底部的位置时才自动滚动
-    if (_logScrollController.hasClients) {
-      final position = _logScrollController.position;
-      if (position.pixels >= position.maxScrollExtent - 100) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          if (_logScrollController.hasClients) {
-            _logScrollController
-                .jumpTo(_logScrollController.position.maxScrollExtent);
-          }
-        });
-      }
-    }
+    // 使用 reverse ListView，无需手动滚动管理
   }
 
   Future<void> _toggleMonitor() async {
@@ -843,9 +831,13 @@ class _RemoteControlCardState extends State<RemoteControlCard> {
                             radius: const Radius.circular(5),
                             child: ListView.builder(
                               controller: _logScrollController,
+                              reverse: true, // 倒序显示，最新数据自动在底部
                               itemCount: _logs.length,
                               itemBuilder: (context, index) {
-                                return _buildLogItem(_logs[index]);
+                                // reverse: true 时，index 0 是最后一个元素
+                                // 所以我们需要反转索引来显示正确的顺序
+                                final actualIndex = _logs.length - 1 - index;
+                                return _buildLogItem(_logs[actualIndex]);
                               },
                             ),
                           ),

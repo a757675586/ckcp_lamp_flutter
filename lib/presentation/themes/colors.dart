@@ -41,6 +41,24 @@ class AppColors {
   static const Color glassBackgroundDark = Color(0xCC1E293B); // 80% Slate 800
   static const Color glassBackgroundLight = Color(0xCCFFFFFF); // 80% White
 
+  // High quality glass borders
+  static const Color glassBorderWhite20 = Color(0x33FFFFFF);
+  static const Color glassBorderWhite10 = Color(0x1AFFFFFF);
+  static const Color glassBorderWhite5 = Color(0x0DFFFFFF);
+
+  // ========== Diffuse Blob Colors (Neon/Cyberpunk) ==========
+  static const List<Color> diffuseAuthColors = [
+    Color(0xFF4F46E5), // Indigo 600
+    Color(0xFF7C3AED), // Violet 600
+    Color(0xFFDB2777), // Pink 600
+  ];
+
+  static const List<Color> diffuseHomeColors = [
+    Color(0xFF3B82F6), // Blue 500
+    Color(0xFF06B6D4), // Cyan 500
+    Color(0xFF8B5CF6), // Violet 500
+  ];
+
   // ========== Gradients ==========
   static const LinearGradient primaryGradient = LinearGradient(
     colors: [primary, secondary],

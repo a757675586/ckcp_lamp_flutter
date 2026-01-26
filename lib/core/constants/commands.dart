@@ -89,13 +89,13 @@ class CkcpCommand {
   static const int dynamicSource = 0x1A;
 
   /// VIN 码注册
-  static const int registerVin = 0x70;
+  static const int registerVin = 0x0A;
 
   /// 车型编号设置
-  static const int setCarCode = 0x71;
+  static const int setCarCode = 0x0B;
 
   /// 功能编号设置
-  static const int setFuncCode = 0x72;
+  static const int setFuncCode = 0x0C;
 
   /// 远程控制 (CAN/LIN)
   static const int remoteControl = 0x80;

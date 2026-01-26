@@ -270,7 +270,7 @@ class AmbientCommands {
   /// 格式: <0A1211{VIN_HEX}>
   static Uint8List registerVin(String vin) {
     // VIN 的 ASCII 值作为数据
-    final data = <int>[0x12, 0x11]; // 固定前缀
+    final data = <int>[0x11]; // 固定前缀
     data.addAll(vin.toUpperCase().codeUnits);
     return CkcpProtocol.buildFrame(CkcpCommand.registerVin, data);
   }

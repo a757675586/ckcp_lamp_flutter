@@ -1,7 +1,7 @@
 ﻿name: ckcp_lamp_flutter
 description: CKCP LAMP - 跨平台车载氛围灯控制与OTA升级应用
 publish_to: 'none'
-version: 1.0.6+1
+version: 1.0.7+1
 
 environment:
   sdk: '>=3.2.0 <4.0.0'
@@ -53,6 +53,7 @@ flutter:
   assets:
     - assets/images/
     - assets/i18n/
+
 
 
 
